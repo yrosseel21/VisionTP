@@ -28,7 +28,16 @@ ind2_1 = ind2_1(:);
 %% PARTIE A MODIFIER AFIN D'APPLIQUER SYMETRIE ET SEUILLAGE %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cette premiere ligne doit etre modifiee pour appliquer les contraintes souhaitees % 
-ind1=ind1_2;
+maxI1 = maxI1(:);
+maxI1 = maxI1/max(maxI1);
+ind_cont = zeros(size(ind1_2));
+n = length(ind1_2);
+for i=1:n
+    if ind2_1(ind1_2(i)) ==  i && maxI1(i) > seuil
+        ind_cont(i) = 1;
+    end
+end
+ind1 = find(ind_cont);
 
 % Cette deuxieme doit etre gardee telle quelle
 ind2 = ind1_2(ind1);
