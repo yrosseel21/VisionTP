@@ -7,7 +7,7 @@
 % C'est la raison pour laquelle on inverse les lignes et les colonnes 
 % dans la reconstruction de la mosaique. 
 
-function [Imos] = mosaique3(I1,I2,I3,H1_2,H2_3)
+function [Imos] = mosaiquecoul_sens(I1,I2,H,sens)
 
 % On recupere la taille des deux images. 
 [nblI1 nbcI1, nb_canaux] = size(I1);
@@ -93,11 +93,23 @@ for x=1:nbcImos,
     % Pondérer avec I1 si possible
     if(x_R2>=1 & x_R2<=nbcI2 & y_R2>=1 & y_R2<=nblI2 & ...
             x_R1>=1 & x_R1<=nbcI1 & y_R1>=1 & y_R1<=nblI1)
-        d1 = nbcI1 - y_R1;
-        d2 = y_R2;
+        if strcmp(sens,'Direct') == 1
+            d1 = nbcI1 - x_R1;
+            d2 = x_R2;
+        else 
+            d2 = nbcI2 - x_R2;
+            d1 = x_R1;
+        end
         p1 = d1/(d1+d2);
         p2 = d2/(d1+d2);
-        Imos(y,x,:)=p1*I1(y_R1,x_R1,:) + p2*I2(y_R2,x_R2,:);
+        % Eviter les zones noires des mosaïques intermédiaires
+        if I1(y_R1,x_R1,:) == 0 
+            Imos(y,x,:)=I2(y_R2,x_R2,:);
+        elseif I2(y_R2,x_R2,:) == 0
+            Imos(y,x,:)= I1(y_R1,x_R1,:);
+        else
+            Imos(y,x,:)=p1*I1(y_R1,x_R1,:) + p2*I2(y_R2,x_R2,:);
+        end
     end  
 
   end

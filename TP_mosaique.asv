@@ -78,19 +78,22 @@ imwrite(uint8(Imoscoul),'mosaique2_coul.pgm');
 % Version 4 pour la reconstruction avec 3 images %  
 % en couleurs et/ou en niveaux de gris           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+H1_2 = H;
+Imos1_2 = Imoscoul;
 H2_1 = homographie(XY_C2,XY_C1);
-Imos2_1 = mosaiquecoul_sens(Im2_coul,Im1_coul,H2_1,"Inverse");
-[XY_21,Res_21] = harris(rgb2gray(uint8(Imos2_1)),TailleFenetre,NbPoints,k);
-
+Imos2_1 = mosaiquecoul(Im2_coul,Im1_coul,H2_1);
 [XY_3,Res_3] = harris(Im3,TailleFenetre,NbPoints,k);
 [XY_C2,XY_C3] = apparier_POI(Im2,XY_2,Im3,XY_3,TailleFenetre,seuil);
 H2_3 = homographie(XY_C2,XY_C3);
-Imos2_3 = mosaiquecoul_sens(Im2_coul,Im3_coul,H2_3,"Direct");
-[XY_23,Res_23] = harris(rgb2gray(uint8(Imos2_3)),TailleFenetre,NbPoints,k);
+Imos2_3 = mosaiquecoul(Im2_coul,Im3_coul,H2_3);
 
-[XY_C21,XY_C23] = apparier_POI(rgb2gray(uint8(Imos2_1)),XY_21,rgb2gray(uint8(Imos2_3)),XY_23,TailleFenetre,0.97);
-H21_23 = homographie(XY_C21,XY_C23);
-I_mos123 = mosaiquecoul_sens(uint8(Imos2_1),uint8(Imos2_3),H21_23,"Direct");
+[XY_12,Res_12] = harris(rgb2gray(uint8(Imos1_2)),TailleFenetre,NbPoints,k);
+[XY_23,Res_23] = harris(rgb2gray(uint8(Imos2_3)),TailleFenetre,NbPoints,k);
+[XY_C23,XY_C12] = apparier_POI(rgb2gray(uint8(Imos2_3)),XY_23,rgb2gray(uint8(Imos1_2)),XY_12,TailleFenetre,0.95);
+[XY_C12,XY_C3] = apparier_POI(rgb2gray(uint8(Imos1_2)),XY_12,Im3,XY_3,TailleFenetre,0.6);
+%H12_23 = homographie(XY_C12,XY_C23);
+H12_3 = homographie(XY_C12,XY_C3);
+I_mos123 = mosaiquecoul(uint8(Imos1_2),Im3_coul,H12_3);
 figure;
 affichage_image(uint8(I_mos123),'Mosaique obtenue a partir des 3 images couleur initiales',1,1,1);
 % SAUVEGARDE DE LA MOSAIQUE A TROIS IMAGES EN COULEUR VERSION 2
