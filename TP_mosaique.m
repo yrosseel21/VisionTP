@@ -72,7 +72,7 @@ Imoscoul = mosaiquecoul(Im1_coul,Im2_coul,H);
 figure;
 affichage_image(uint8(Imoscoul),'Mosaique obtenue a partir des 2 images couleur initiales (version 2)',1,1,1);
 % SAUVEGARDE DE LA MOSAIQUE A DEUX IMAGES EN COULEUR VERSION 2
-imwrite(uint8(Imoscoul),'mosaique2_coul.pgm');
+imwrite(uint8(Imoscoul),'mosaique2_coul.jpg');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Version 4 pour la reconstruction avec 3 images %  
@@ -94,5 +94,5 @@ I_mos123 = mosaiquecoul_sens(uint8(Imos2_1),uint8(Imos2_3),H21_23,"Direct");
 figure;
 affichage_image(uint8(I_mos123),'Mosaique obtenue a partir des 3 images couleur initiales',1,1,1);
 % SAUVEGARDE DE LA MOSAIQUE A TROIS IMAGES EN COULEUR VERSION 2
-imwrite(uint8(I_mos123),'mosaique3.pgm');
+imwrite(uint8(I_mos123),'mosaique3.jpg');
 
